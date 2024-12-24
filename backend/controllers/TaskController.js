@@ -47,7 +47,35 @@ const show = (req, res) => {
     });
 };
 
+// create
+const create = (req, res) => {
+
+    const { category_id } = req.params;
+    const { title, description, due_date } = req.body;
+
+    // query
+    const sql = `INSERt INTO tasks SET category_id = ?, title = ?, description = ?, due_date = ?`;
+
+    connection.query(sql, [category_id, title, description, due_date], (err, results) => {
+
+        // error
+        if (isNaN(category_id)) {
+            return res.status(404).json({ error: "Category_id required" });
+        };
+
+        if (!title) {
+            return res.status(400).json({ message: "Title required" });
+        };
+
+        // success
+        res.status(200).json({
+            message: "Task added successfuly"
+        });
+    });
+};
+
 module.exports = {
     index,
-    show
+    show,
+    create
 };

@@ -1,11 +1,14 @@
 const express = require("express");
 const router = express.Router();
-const CategoriesController = require("../controllers/CategoriesController.js")
+const TaskController = require("../controllers/TaskController.js")
 
 // index
-router.get("/", CategoriesController.index);
+router.get("/", TaskController.index);
 
 // show
-router.get("/:category_id/tasks", CategoriesController.show);
+router.get("/:category_id/tasks", TaskController.show);
+
+// create
+router.post("/:category_id/task", TaskController.create);
 
 module.exports = router

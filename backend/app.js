@@ -6,6 +6,9 @@ const CategoriesRouter = require("./routes/categories.js")
 const PORT = process.env.PORT;
 const HOST = process.env.HOST;
 
+// body parse middleware
+app.use(express.json());
+
 // use router
 app.use("/categories", CategoriesRouter);
 
