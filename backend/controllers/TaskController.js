@@ -74,8 +74,80 @@ const create = (req, res) => {
     });
 };
 
+// update
+const update = (req, res) => {
+
+    const { taskID } = req.params;
+    const { title, description, due_date, completed } = req.body;
+
+    // validation
+    if (isNaN(taskID)) {
+        return res.status(404).json({ message: "Invalid Task ID" });
+    };
+
+    if (!title) {
+        return res.status(400).json({ message: "Title is required" });
+    };
+
+    // query
+    const sql = `UPDATE tasks SET title = ?, description = ?, due_date = ?, completed = ? WHERE id = ?`;
+
+    connection.query(sql, [title, description, due_date, completed, taskID], (err, results) => {
+
+        // error handling
+        if (err) {
+            console.error("DB Error:", err);
+            return res.status(500).json({
+                message: "Internal Server Error"
+            });
+        };
+
+        if (results.affectedRows == 0) {
+            return res.status(404).json({ message: "Task not found" });
+        };
+
+        // success
+        res.status(200).json({
+            message: "Task update successfully",
+            task: results
+        });
+    });
+};
+
+// destroy
+const destroy = (req, res) => {
+
+    const { taskID } = req.params;
+
+    // validation
+    if (isNaN(taskID)) {
+        return res.status(400).json({ message: "Invalid Task ID" });
+    };
+
+    // query
+    const sql = `DELETE FROM tasks WHERE id = ?`;
+
+    connection.query(sql, [taskID], (err, res) => {
+
+        // error
+        if (err) {
+            console.error("DB Error:", err);
+            return res.status(500).json({ message: "Internal Server Error" });
+        };
+
+        if (results.affectedRows === 0) {
+            return res.status(404).json({ message: "Task not found" });
+        };
+
+        // success
+        res.status(200).json({ message: "Task delete successfully" });
+    });
+};
+
 module.exports = {
     index,
     show,
-    create
+    create,
+    update,
+    destroy
 };
