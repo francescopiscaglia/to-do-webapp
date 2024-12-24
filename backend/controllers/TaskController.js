@@ -1,106 +1,110 @@
 const connection = require("../database/connection.js")
 
 // index
-const index = (req, res) => {
+const index = async (req, res) => {
 
-    // query
-    const sql = `SELECT * FROM categories`;
-
-    connection.query(sql, (err, results) => {
-
-        // error
-        if (err) {
-            console.error("DB Error:", err);
-            return res.status(500).json({ err: "Internal Server Error" });
-        };
+    try {
+        // query
+        const sql = `SELECT * FROM categories`;
+        const [results] = await connection.query(sql);
 
         if (results.length === 0) {
             return res.status(404).json({ message: "No categories found" });
         };
 
-        // success
         res.status(200).json(results);
-    });
+
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({ err: "Internal Server Error" });
+    }
 };
 
 // show
-const show = (req, res) => {
+const show = async (req, res) => {
 
-    const { category_id } = req.params;
+    try {
 
-    const sql = `SELECT * FROM tasks WHERE category_id = ?`;
+        const { category_id } = req.params;
 
-    connection.query(sql, [category_id], (err, results) => {
+        // query
+        const sql = `SELECT * FROM tasks WHERE category_id = ?`;
+
+        const [results] = await connection.query(sql, [category_id]);
 
         // error
-        if (err) {
-            console.error(err);
-            return res.status(500).json({ message: "Internal Server Error" });
-        };
-
         if (results.length === 0) {
             return res.status(404).json({ message: "No task found" });
         };
 
         // success
         res.status(200).json(results);
-    });
+
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({ message: "Internal Server Error" });
+    };
+
 };
 
 // create
-const create = (req, res) => {
+const create = async (req, res) => {
 
-    const { category_id } = req.params;
-    const { title, description, due_date } = req.body;
+    try {
 
-    // query
-    const sql = `INSERt INTO tasks SET category_id = ?, title = ?, description = ?, due_date = ?`;
+        const { category_id } = req.params;
+        const { title, description, due_date } = req.body;
 
-    connection.query(sql, [category_id, title, description, due_date], (err, results) => {
-
-        // error
-        if (isNaN(category_id)) {
-            return res.status(404).json({ error: "Category_id required" });
-        };
-
+        // validation
         if (!title) {
             return res.status(400).json({ message: "Title required" });
         };
 
+        if (isNaN(category_id) || !category_id) {
+            return res.status(404).json({ error: "Invalid Category_id" });
+        };
+
+        // query
+        const sql = `INSERT INTO tasks SET category_id = ?, title = ?, description = ?, due_date = ?`;
+
+        const [results] = await connection.query(sql, [category_id, title, description, due_date]);
+
+        if (results.affectedRows == 0) {
+            return res.status(404).json({ message: "Task not found" });
+        };
+
         // success
-        res.status(200).json({
+        res.status(201).json({
             message: "Task added successfuly"
         });
-    });
+
+    } catch (err) {
+        console.error(err);
+        return res.status(500).json({ message: "Internal Server Error" });
+    };
 };
 
 // update
-const update = (req, res) => {
+const update = async (req, res) => {
 
-    const { taskID } = req.params;
-    const { title, description, due_date, completed } = req.body;
+    try {
 
-    // validation
-    if (isNaN(taskID)) {
-        return res.status(404).json({ message: "Invalid Task ID" });
-    };
+        const { taskID } = req.params;
+        const { title, description, due_date, completed } = req.body;
 
-    if (!title) {
-        return res.status(400).json({ message: "Title is required" });
-    };
-
-    // query
-    const sql = `UPDATE tasks SET title = ?, description = ?, due_date = ?, completed = ? WHERE id = ?`;
-
-    connection.query(sql, [title, description, due_date, completed, taskID], (err, results) => {
-
-        // error handling
-        if (err) {
-            console.error("DB Error:", err);
-            return res.status(500).json({
-                message: "Internal Server Error"
-            });
+        // validation
+        if (isNaN(taskID)) {
+            return res.status(404).json({ message: "Invalid Task ID" });
         };
+
+        if (!title) {
+            return res.status(400).json({ message: "Title is required" });
+        };
+
+        // query
+        const sql = `UPDATE tasks SET title = ?, description = ?, due_date = ?, completed = ? WHERE id = ?`;
+
+        const [results] = await connection.query(sql, [title, description, due_date || null, completed || 0, taskID]);
 
         if (results.affectedRows == 0) {
             return res.status(404).json({ message: "Task not found" });
@@ -111,29 +115,28 @@ const update = (req, res) => {
             message: "Task update successfully",
             task: results
         });
-    });
+
+    } catch (err) {
+        console.error(err);
+        return res.status(500).json({ message: "Internal Server Error" });
+    };
 };
 
 // destroy
-const destroy = (req, res) => {
+const destroy = async (req, res) => {
 
-    const { taskID } = req.params;
+    try {
+        const { taskID } = req.params;
 
-    // validation
-    if (isNaN(taskID)) {
-        return res.status(400).json({ message: "Invalid Task ID" });
-    };
-
-    // query
-    const sql = `DELETE FROM tasks WHERE id = ?`;
-
-    connection.query(sql, [taskID], (err, res) => {
-
-        // error
-        if (err) {
-            console.error("DB Error:", err);
-            return res.status(500).json({ message: "Internal Server Error" });
+        // validation
+        if (isNaN(taskID)) {
+            return res.status(400).json({ message: "Invalid Task ID" });
         };
+
+        // query
+        const sql = `DELETE FROM tasks WHERE id = ?`;
+
+        const [results] = await connection.query(sql, [taskID]);
 
         if (results.affectedRows === 0) {
             return res.status(404).json({ message: "Task not found" });
@@ -141,7 +144,11 @@ const destroy = (req, res) => {
 
         // success
         res.status(200).json({ message: "Task delete successfully" });
-    });
+
+    } catch (err) {
+        console.error(err);
+        return res.status(500).json({ message: "Internal Server Error" });
+    };
 };
 
 module.exports = {

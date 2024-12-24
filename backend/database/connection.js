@@ -12,4 +12,6 @@ connection.connect(err => {
     console.log("DB connect");
 })
 
-module.exports = connection
+const promiseConnection = connection.promise()
+
+module.exports = promiseConnection
