@@ -8,7 +8,7 @@ export default function HomePage() {
     return (
         <>
             <Helmet>
-                <title>Home page - To Do List</title>
+                <title>To Do List</title>
             </Helmet>
             <div className="container py-4">
 
