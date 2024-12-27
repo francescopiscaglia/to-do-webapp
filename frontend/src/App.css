@@ -1,9 +1,5 @@
-header {
-    height: 80px;
-}
-
 main {
-    height: calc(100vh - 160px);
+    height: calc(100vh - 80px - 40px);
 
     .card {
         cursor: pointer;
