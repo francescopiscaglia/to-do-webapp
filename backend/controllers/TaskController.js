@@ -14,10 +14,9 @@ const index = async (req, res) => {
 
         res.status(200).json(results);
 
-    } catch (error) {
-        console.error(error);
-        return res.status(500).json({ err: "Internal Server Error" });
-    }
+    } catch (err) {
+        next(err);
+    };
 };
 
 // show
@@ -40,9 +39,8 @@ const show = async (req, res) => {
         // success
         res.status(200).json(results);
 
-    } catch (error) {
-        console.error(error);
-        return res.status(500).json({ message: "Internal Server Error" });
+    } catch (err) {
+        next(err);
     };
 
 };
@@ -79,8 +77,7 @@ const create = async (req, res) => {
         });
 
     } catch (err) {
-        console.error(err);
-        return res.status(500).json({ message: "Internal Server Error" });
+        next(err);
     };
 };
 
@@ -117,8 +114,7 @@ const update = async (req, res) => {
         });
 
     } catch (err) {
-        console.error(err);
-        return res.status(500).json({ message: "Internal Server Error" });
+        next(err);
     };
 };
 
@@ -146,8 +142,7 @@ const destroy = async (req, res) => {
         res.status(200).json({ message: "Task delete successfully" });
 
     } catch (err) {
-        console.error(err);
-        return res.status(500).json({ message: "Internal Server Error" });
+        next(err);
     };
 };
 
