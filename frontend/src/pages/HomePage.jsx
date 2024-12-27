@@ -14,22 +14,33 @@ export default function HomePage() {
         fetch(url)
             .then(response => response.json())
             .then(data => {
-                console.log(data);
+                // console.log(data);
                 setCategories(data);
             })
+            .catch(error => {
+                console.error('Error fetching data:', error);
+            });
     }, []);
 
     // render
     return (
         <>
-            {categories ? categories.map(category => (
-                <div key={category.id}>
-                    <h2>{category.name}</h2>
-                    <p>{category.description}</p>
+            <div className="container">
+                <div className="d-flex flex-column align-items-center justify-content-center">
+                    {categories ? categories.map(category => (
+                        <div className="card text-center" key={category.id} style={{ width: "18rem", margin: "5px" }}>
+                            <div className="d-flex align-items-center ps-1">
+                                <i className="bi bi-bookmark-fill text-primary m-0 p-0" style={{ verticalAlign: "middle" }}></i>
+                                <p className="m-0 p-2">{category.name}</p>
+                            </div>
+                        </div>
+
+                    )) : (
+                        <p>Loading...</p>
+                    )}
                 </div>
-            )) : (
-                <p>Loading...</p>
-            )}
+            </div>
+
         </>
     )
 }
