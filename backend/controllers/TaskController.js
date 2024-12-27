@@ -1,11 +1,30 @@
 const connection = require("../database/connection.js")
 
-// index
+// index categories
 const index = async (req, res) => {
 
     try {
         // query
         const sql = `SELECT * FROM categories`;
+        const [results] = await connection.query(sql);
+
+        if (results.length === 0) {
+            return res.status(404).json({ message: "No categories found" });
+        };
+
+        res.status(200).json(results);
+
+    } catch (err) {
+        next(err);
+    };
+};
+
+// index tasks
+const indexTasks = async (req, res) => {
+
+    try {
+        // query
+        const sql = `SELECT * FROM tasks`;
         const [results] = await connection.query(sql);
 
         if (results.length === 0) {
@@ -148,6 +167,7 @@ const destroy = async (req, res) => {
 
 module.exports = {
     index,
+    indexTasks,
     show,
     create,
     update,

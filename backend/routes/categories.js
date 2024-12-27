@@ -2,8 +2,11 @@ const express = require("express");
 const router = express.Router();
 const TaskController = require("../controllers/TaskController.js")
 
-// index
+// index categories
 router.get("/", TaskController.index);
+
+// index tasks
+router.get("/tasks", TaskController.indexTasks);
 
 // show
 router.get("/:category_id/tasks", TaskController.show);
