@@ -17,7 +17,6 @@ export default function HomePage() {
                     <CompletedButton />
                 </div>
 
-
                 <CategoriesCard />
 
             </div>
