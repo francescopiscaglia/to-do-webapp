@@ -3,10 +3,6 @@ import AllTasksButton from "../components/button/AllTasksButton";
 import CompletedButton from "../components/button/CompletedButton";
 
 export default function HomePage() {
-
-    // logic
-
-
     // render
     return (
         <>
