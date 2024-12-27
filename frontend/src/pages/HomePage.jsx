@@ -1,13 +1,13 @@
 import { useEffect, useState } from "react"
+import CategoriesCard from "../components/CategoriesCard";
+import CompletedCard from "../components/CompletedCard";
 
 export default function HomePage() {
 
     // logic
+    const [tasks, setTasks] = useState([]);
 
-    // state
-    const [categories, setCategories] = useState([]);
-
-    const url = `http://localhost:3007/categories`
+    const url = `http://localhost:3007/categories/tasks`;
 
     // fetch data
     useEffect(() => {
@@ -15,32 +15,27 @@ export default function HomePage() {
             .then(response => response.json())
             .then(data => {
                 // console.log(data);
-                setCategories(data);
+                setTasks(data);
             })
             .catch(error => {
                 console.error('Error fetching data:', error);
             });
     }, []);
 
+    // filter completed tasks
+    const completedTask = tasks.filter(task => task.completed === 1);
+    // console.log(completedTask);
+
     // render
     return (
         <>
-            <div className="container">
-                <div className="d-flex flex-column align-items-center justify-content-center">
-                    {categories ? categories.map(category => (
-                        <div className="card text-center" key={category.id} style={{ width: "18rem", margin: "5px" }}>
-                            <div className="d-flex align-items-center ps-1">
-                                <i className="bi bi-bookmark-fill text-primary m-0 p-0" style={{ verticalAlign: "middle" }}></i>
-                                <p className="m-0 p-2">{category.name}</p>
-                            </div>
-                        </div>
+            <div className="container py-4">
 
-                    )) : (
-                        <p>Loading...</p>
-                    )}
-                </div>
+                <CompletedCard />
+
+                <CategoriesCard />
+
             </div>
-
         </>
-    )
-}
+    );
+};

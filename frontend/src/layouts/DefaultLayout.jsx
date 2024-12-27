@@ -7,7 +7,7 @@ export default function DefaultLayout() {
         <>
             <AppHeader />
 
-            <main>
+            <main className="bg-dark">
                 <Outlet />
             </main>
 

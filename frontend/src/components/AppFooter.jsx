@@ -1,6 +1,6 @@
 export default function AppFooter() {
     return (
-        <footer>
+        <footer className="bg-dark text-light">
             footer
         </footer>
     )

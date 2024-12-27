@@ -1,0 +1,15 @@
+header {
+    height: 80px;
+}
+
+main {
+    height: calc(100vh - 160px);
+
+    .card {
+        cursor: pointer;
+    }
+}
+
+footer {
+    height: 80px;
+}
