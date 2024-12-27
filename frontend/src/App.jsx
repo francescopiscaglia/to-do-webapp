@@ -2,7 +2,8 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import './App.css'
 import DefaultLayout from './layouts/DefaultLayout'
 import HomePage from './pages/HomePage'
-import CompletedPages from './pages/CompletedPages'
+import CompletedPage from './pages/CompletedPage'
+import AllTasksPage from './pages/AllTasksPage'
 
 function App() {
 
@@ -13,10 +14,8 @@ function App() {
 
           <Route element={<DefaultLayout />}>
             <Route path='/' element={<HomePage />}></Route>
-            <Route path='/completed-page' element={<CompletedPages />}></Route>
-
-            {/* <Route path='/about' element={<About />}></Route>
-            <Route path='/contact' element={<Contact />}></Route> */}
+            <Route path='/completed-page' element={<CompletedPage />}></Route>
+            <Route path='/all-tasks' element={<AllTasksPage />}></Route>
           </Route>
 
         </Routes>

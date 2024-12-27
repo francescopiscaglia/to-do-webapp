@@ -1,8 +1,6 @@
 import CompletedCard from '../components/CompletedCard';
 
-export default function CompletedPages() {
-
-
+export default function CompletedPage() {
 
     // render
     return (
