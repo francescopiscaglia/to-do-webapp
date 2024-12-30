@@ -21,11 +21,14 @@ export default function AllTasksPage() {
             });
     }, []);
 
+    // remove completed tasks
+    const allTaskNotCompleted = tasks.filter(task => task.completed === 0);
+
     return (
         <>
             <div className="d-flex flex-column align-items-center justify-content-center py-5">
 
-                <AllTasksCard tasks={tasks} />
+                <AllTasksCard tasks={allTaskNotCompleted} />
 
             </div>
         </>
