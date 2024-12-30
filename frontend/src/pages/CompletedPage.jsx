@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import CompletedCard from '../components/CompletedCard';
+import TaskCard from '../components/TaskCard';
 
 export default function CompletedPage() {
 
@@ -28,7 +28,11 @@ export default function CompletedPage() {
     // render
     return (
         <>
-            <CompletedCard completedTask={completedTask} />
+            <div className="d-flex flex-column align-items-center justify-content-center py-5">
+
+                <TaskCard tasks={completedTask} />
+
+            </div>
         </>
     )
 }

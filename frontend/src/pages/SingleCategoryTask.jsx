@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react"
 import { useParams } from "react-router-dom"
+import TaskCard from "../components/TaskCard";
 
 export default function SingleCategoryTask() {
 
@@ -25,13 +26,11 @@ export default function SingleCategoryTask() {
 
     return (
         <>
-            <p className="text-white">Category ID: {category_id}</p>
-            {tasks.map(task => (
-                <div key={task.id}>
-                    <h1 className="text-white">{task.title}</h1>
-                    <p className="text-white">{task.description}</p>
-                </div>
-            ))}
+            <div className="d-flex flex-column align-items-center justify-content-center py-5">
+
+                <TaskCard tasks={tasks} />
+
+            </div>
         </>
     )
 }

@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import AllTasksCard from '../components/AllTasksCard';
+import TaskCard from '../components/TaskCard';
 
 export default function AllTasksPage() {
 
@@ -28,7 +28,7 @@ export default function AllTasksPage() {
         <>
             <div className="d-flex flex-column align-items-center justify-content-center py-5">
 
-                <AllTasksCard tasks={allTaskNotCompleted} />
+                <TaskCard tasks={allTaskNotCompleted} />
 
             </div>
         </>

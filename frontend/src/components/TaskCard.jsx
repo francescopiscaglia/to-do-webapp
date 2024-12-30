@@ -1,4 +1,4 @@
-export default function AllTasksCard({ tasks }) {
+export default function TaskCard({ tasks }) {
     return (
         <>
             {tasks ? tasks.map(task => (
