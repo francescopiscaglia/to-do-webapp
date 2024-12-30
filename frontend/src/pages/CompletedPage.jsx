@@ -30,7 +30,7 @@ export default function CompletedPage() {
         <>
             <div className="d-flex flex-column align-items-center justify-content-center py-5">
 
-                <TaskCard tasks={completedTask} />
+                <TaskCard tasks={completedTask} isCompleted={true} />
 
             </div>
         </>
